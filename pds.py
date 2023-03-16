@@ -23,13 +23,23 @@ def plot(x, y, cor):
 
 # na pratica o tamanho de x pode ser infinito
 # os coeficientes do filtro (a e b) são finitos
+
+
 def eqdif(b, a, x):
     y = np.zeros_like(x)
     for n in range(0, len(y)):
         for k in range(1, len(a)):
-            if n-k>=0:
+            if n-k >= 0:
                 y[n] -= a[k]*y[n-k]
         for k in range(len(b)):
-            if n-k>=0:
-               y[n] += b[k]*x[n-k]
+            if n-k >= 0:
+                y[n] += b[k]*x[n-k]
+    return y
+
+
+def media_movel(x, M):
+    b = np.ones(M+1)
+    for m in range(0, b.size):
+        b[m] = (1/(m+1))
+    y = eqdif(b, [1], x)
     return y
