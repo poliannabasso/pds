@@ -6,3 +6,5 @@ r = np.exp(-0.00000000001*n)*np.cos(0.1*np.pi*n)*u(n)
 
 plot(n, r, 'y')
 plot(n, s, 'g')
+
+

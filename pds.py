@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
+import scipy.signal as sig
 
 def u(n):
     return (n >= 0)*1.
@@ -27,15 +27,12 @@ def plot(x, y, cor):
 
 def eqdif(b, a, x):
     y = np.zeros_like(x)
-    for n in range(0, len(y)):
-        for k in range(1, len(a)):
-            if n-k >= 0:
-                y[n] -= a[k]*y[n-k]
-        for k in range(len(b)):
-            if n-k >= 0:
-                y[n] += b[k]*x[n-k]
+    for n in range(x.size):
+        for k in range(1, min(len(a), n+1)):
+            y[n] -= a[k]*y[n-k]
+        for k in range(0, min(len(b), n+1)):
+            y[n] += b[k]*x[n-k]
     return y
-
 
 def media_movel(x, M):
     b = np.ones(M+1)
