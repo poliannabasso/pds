@@ -1,0 +1,30 @@
+import sounddevice as sd
+import numpy as np
+from scipy.io import loadmat
+
+struct = loadmat('Ring.mat')
+y = struct['y'][:, 0]
+Fs = int(struct['Fs'][0][0])
+
+time = np.linspace(0, (len(y)-1)/Fs, int(1/Fs))
+Full_sig = y.copy()
+m = min(y)
+M = max(y)
+timeA = 7
+timeB = 8
+snip = np.arange(timeA*Fs, timeB*Fs)
+
+fragment = Full_sig[snip]
+#sd.play(y, Fs, blocking=True)
+
+mark_x = np.array([[timeA, timeB], [timeA, timeB]])
+mark_y = np.array([[m, m], [M, M]])
+plt.plot(time, Full_sig, mark_x, mark_y)
+plt.show()
+sd.play(fragment, Fs, blocking=True)
+
+[xCorr, lags] = plt.xcorr(Full_sig, fragment)
+plt.stem(lags/2, xCorr)
+
+
+
